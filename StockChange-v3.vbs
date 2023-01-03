@@ -41,22 +41,22 @@ Sub StockChange()
         For RowN = 2 To LastRow
 
            'Calculate stock volume and print it in the Summary Table
-           Volume = Volume + Cells(RowN, 7).Value
+           Volume = Volume + Sheet.Cells(RowN, 7).Value
          
             'Check if the row after the current one has the same ticker
-            If Cells(RowN + 1, 1).Value <> Cells(RowN, 1).Value Then
+            If Sheet.Cells(RowN + 1, 1).Value <> Sheet.Cells(RowN, 1).Value Then
             
             'If the next row is a different ticker
 
                 'Set the ticker symbol & print it in the Summary Table
-                Ticker = Cells(RowN, 1).Value
+                Ticker = Sheet.Cells(RowN, 1).Value
                 Sheet.Range("I" & Summary_Row).Value = Ticker
                 
                 'Set opening price
-                Opening = Cells(Opening_Row, 3).Value
+                Opening = Sheet.Cells(Opening_Row, 3).Value
                 
                 'Set close price
-                Closing = Cells(RowN, 6).Value
+                Closing = Sheet.Cells(RowN, 6).Value
                 
                 'Calculate raw price change, print it in the Summary Table, and color cells based on value
                 ChangeRaw = Closing - Opening
@@ -114,40 +114,40 @@ Sub StockChange()
         'Update last row to reflect the last row in the Summary Table
         LastRow = Sheet.Cells(Rows.Count, 9).End(xlUp).Row
         
-       'Cycle through Summary Table rows
+        'Cycle through Summary Table rows
         For RowN = 2 To LastRow
         
             'If the percent value in the Summary Table is greater then the cell below it and the value listed under "Greatest % Increase" in the Max Table...
-            If Cells(RowN, 11).Value > Cells(RowN + 1, 11).Value And Cells(RowN, 11).Value > Sheet.Range("P2").Value Then
+            If Sheet.Cells(RowN, 11).Value > Sheet.Cells(RowN + 1, 11).Value And Sheet.Cells(RowN, 11).Value > Sheet.Range("P2").Value Then
             
                 'Add this value to the Max Table as the "Greatest % Increase"
-                Sheet.Range("P2").Value = Cells(RowN, 11).Value
-                Sheet.Range("O2").Value = Cells(RowN, 9).Value
+                Sheet.Range("P2").Value = FormatPercent(Sheet.Cells(RowN, 11).Value)
+                Sheet.Range("O2").Value = Sheet.Cells(RowN, 9).Value
                 
             'Otherwise, if it's less then the cell below it and the value listed in the "Greatest % Decrease" in the Max Table...
-            ElseIf Cells(RowN, 11).Value < Cells(RowN + 1, 11).Value And Cells(RowN, 11).Value < Sheet.Range("P3").Value Then
+            ElseIf Sheet.Cells(RowN, 11).Value < Sheet.Cells(RowN + 1, 11).Value And Sheet.Cells(RowN, 11).Value < Sheet.Range("P3").Value Then
                 
                 'Add this value to the Max Table as the "Greatest % Decrease"
-                Sheet.Range("P3").Value = Cells(RowN, 11).Value
-                Sheet.Range("O3").Value = Cells(RowN, 9).Value
+                Sheet.Range("P3").Value = FormatPercent(Sheet.Cells(RowN, 11).Value)
+                Sheet.Range("O3").Value = Sheet.Cells(RowN, 9).Value
 
             'Otherwise, do nothing with the percentage value in the present row
             End If
             
             'If the volume in the Summary Table is greater then the cell below it and the value listed as the "Greatest Total Volume" in the Max Table...
-            If Cells(RowN, 12).Value > Cells(RowN + 1, 12).Value And Cells(RowN, 12).Value > Sheet.Range("P4").Value Then
+            If Sheet.Cells(RowN, 12).Value > Sheet.Cells(RowN + 1, 12).Value And Sheet.Cells(RowN, 12).Value > Sheet.Range("P4").Value Then
             
                 'Add this value to the Max Table as the "Greatest Total Volume"
-                Sheet.Range("P4").Value = Cells(RowN, 12).Value
-                Sheet.Range("O4").Value = Cells(RowN, 9).Value
+                Sheet.Range("P4").Value = Sheet.Cells(RowN, 12).Value
+                Sheet.Range("O4").Value = Sheet.Cells(RowN, 9).Value
                 
             'Otherwise, do nothing with the volume value in the present row
             End If
             
-        'Move onto next row of data
+        'Once that is done, move onto next row of data
         Next RowN
     
-    'Move onto next sheet
+    'Once you are through with all the data on the current sheet, move onto next sheet
     Next Sheet
     
 'End subprocedure
